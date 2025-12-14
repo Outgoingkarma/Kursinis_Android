@@ -20,9 +20,7 @@
         <activity
             android:name=".activitiesWolt.ChatSystem"
             android:exported="false" />
-        <activity
-            android:name=".activitiesWolt.MyOrders"
-            android:exported="false" />
+
         <activity
             android:name=".activitiesWolt.MenuActivity"
             android:exported="false" />

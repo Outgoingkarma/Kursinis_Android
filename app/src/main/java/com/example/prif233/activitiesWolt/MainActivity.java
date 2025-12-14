@@ -53,9 +53,15 @@ public class MainActivity extends AppCompatActivity {
         Executor executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
 
-        executor.execute(() -> {
+        executor.execute(() ->  {
+            System.out.println("test");
+            System.out.println("test");
+            System.out.println("test");
+            System.out.println("test");
+            System.out.println("test");
             try {
                 String response = RestOperations.sendPost(VALIDATE_USER_URL, info);
+                System.out.println(response);
                 handler.post(() -> {
                     if (!response.equals("Error") && !response.isEmpty()) {
                         Intent intent = new Intent(MainActivity.this, WoltRestaurants.class);
@@ -64,8 +70,46 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
+                System.out.println("tryTest");
             } catch (IOException e) {
-                Toast.makeText(this, "Error validating user", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(this, "Error, wrong username or password", Toast.LENGTH_SHORT).show();
+
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println("Kazkoks erroras");
+                System.out.println(e);
             }
 
         });
