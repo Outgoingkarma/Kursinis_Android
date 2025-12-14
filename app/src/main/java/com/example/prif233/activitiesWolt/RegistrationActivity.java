@@ -163,4 +163,8 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
     }
+    public void loadLogWindow(View view) {
+        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 }
