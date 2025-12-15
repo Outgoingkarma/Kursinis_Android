@@ -80,7 +80,14 @@ public class MyOrders extends AppCompatActivity {
                             Gson gson = gsonBuilder.create();
                             Type ordersListType = new TypeToken<List<FoodOrder>>() {
                             }.getType();
-                            List<FoodOrder> ordersListFromJson = gson.fromJson(response, ordersListType);
+                            String trimmedResponse = response.trim();
+
+                            if (!trimmedResponse.startsWith("[")) {
+                                android.widget.Toast.makeText(MyOrders.this, "Failed to load orders", android.widget.Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            List<FoodOrder> ordersListFromJson = gson.fromJson(trimmedResponse, ordersListType);
 
                             if (ordersListFromJson != null && !ordersListFromJson.isEmpty()) {
                                 ListView ordersListElement = findViewById(R.id.myOrderList);
