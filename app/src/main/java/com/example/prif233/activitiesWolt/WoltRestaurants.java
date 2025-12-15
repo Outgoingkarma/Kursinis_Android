@@ -3,11 +3,13 @@ package com.example.prif233.activitiesWolt;
 import static com.example.prif233.Utils.Constants.GET_ALL_RESTAURANTS_URL;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prif233.R;
+import com.example.prif233.Utils.LocalDateAdapter;
 import com.example.prif233.Utils.LocalDateTimeAdapter;
 import com.example.prif233.Utils.RestOperations;
 import com.example.prif233.model.Driver;
@@ -28,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -84,7 +88,7 @@ public class WoltRestaurants extends AppCompatActivity {
                             System.out.println("executorius");
                             System.out.println("executorius");
                             System.out.println("executorius");
-                            if (!response.equals("Error")) {
+                            if (response != null && !response.startsWith("Error")) {
                                 //Cia yra dalis, kaip is json, kuriame yra [{},{}, {},...] paversti i List is Restoranu
 
                                 GsonBuilder gsonBuilder = new GsonBuilder();
@@ -97,18 +101,24 @@ public class WoltRestaurants extends AppCompatActivity {
 
                                 //Reikia tuos duomenis, kuriuos ka tik isparsinau is json, atvaizduoti grafiniam elemente
                                 ListView restaurantListElement = findViewById(R.id.restaurantList);
-                                RestaurantAdapter adapter = new RestaurantAdapter(this, restaurantListFromJson);
-                                restaurantListElement.setAdapter(adapter);
+                                if (restaurantListFromJson != null && !restaurantListFromJson.isEmpty()) {
+                                    RestaurantAdapter adapter = new RestaurantAdapter(this, restaurantListFromJson);
+                                    restaurantListElement.setAdapter(adapter);
 
-                                restaurantListElement.setOnItemClickListener((parent, view, position, id) -> {
-                                    Restaurant selectedRestaurant = restaurantListFromJson.get(position);
-                                    Intent intentMenu = new Intent(WoltRestaurants.this, MenuActivity.class);
-                                    intentMenu.putExtra("restaurantId", selectedRestaurant.getId());
-                                    intentMenu.putExtra("userId", currentUser.getId());
-                                    startActivity(intentMenu);
-                                });
+                                    restaurantListElement.setOnItemClickListener((parent, view, position, id) -> {
+                                        Restaurant selectedRestaurant = restaurantListFromJson.get(position);
+                                        Intent intentMenu = new Intent(WoltRestaurants.this, MenuActivity.class);
+                                        intentMenu.putExtra("restaurantId", selectedRestaurant.getId());
+                                        intentMenu.putExtra("userId", currentUser.getId());
+                                        startActivity(intentMenu);
+                                    });
+                                } else {
+                                    Toast.makeText(this, "No restaurants available", Toast.LENGTH_SHORT).show();
+                                }
 
 
+                            } else {
+                                Toast.makeText(this, "Error loading restaurants", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -124,9 +134,31 @@ public class WoltRestaurants extends AppCompatActivity {
     }
 
     public void viewPurchaseHistory(View view) {
-        Intent intent = new Intent(WoltRestaurants.this, FoodOrder.class);
-        intent.putExtra("id", currentUser.getId());
-        startActivity(intent);
+
+        if(currentUser != null)
+        try{
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
+            }
+            Gson gson = gsonBuilder.create();
+            String userJson = gson.toJson(currentUser);
+            Intent intent = new Intent(WoltRestaurants.this, MyOrders.class);
+            intent.putExtra("id", currentUser.getId());
+            intent.putExtra("userJson", userJson);
+            startActivity(intent);
+        } catch (Exception e){
+            e.printStackTrace();
+            Intent intent = new Intent(WoltRestaurants.this, MyOrders.class);
+            intent.putExtra("id", currentUser.getId());
+            startActivity(intent);
+
+        } else{
+            Toast.makeText(this, "User information is not available", Toast.LENGTH_SHORT).show();
+        }
+
+
+
     }
 
     public void viewMyAccount(View view) {

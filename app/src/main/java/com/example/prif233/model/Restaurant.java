@@ -2,7 +2,7 @@ package com.example.prif233.model;
 
 
 public class Restaurant extends User {
-    private int id;
+
     private String openTime;
     private String closeTime;
     private int estimatedDeliveryTime;
@@ -11,19 +11,10 @@ public class Restaurant extends User {
     private double averageRating;
     private double deliveryFee;
     private String address;
-    private String imageURL;
+//    private String imageURL;
     private String restaurantName;
 
 
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getOpenTime() {
         return openTime;
@@ -89,13 +80,13 @@ public class Restaurant extends User {
         this.address = address;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
+//    public String getImageURL() {
+//        return imageURL;
+//    }
+//
+//    public void setImageURL(String imageURL) {
+//        this.imageURL = imageURL;
+//    }
 
     public String getRestaurantName() {
         return restaurantName;
