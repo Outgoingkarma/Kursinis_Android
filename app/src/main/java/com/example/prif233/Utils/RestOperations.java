@@ -30,7 +30,21 @@ public class RestOperations {
             in.close();
             return response.toString();
         } else {
-            return "Error";
+            StringBuffer response = new StringBuffer();
+            try {
+                java.io.InputStream errorStream = httpURLConnection.getErrorStream();
+                if (errorStream != null) {
+                    BufferedReader err = new BufferedReader(new InputStreamReader(errorStream));
+                    String line;
+                    while ((line = err.readLine()) != null) {
+                        response.append(line);
+                    }
+                    err.close();
+                }
+            } catch (Exception e) {
+                // If we can't read error stream, just use the error code
+            }
+            return response.length() == 0 ? "Error: " + code : response.toString();
         }
     }
 
@@ -77,7 +91,7 @@ public class RestOperations {
         int code = httpURLConnection.getResponseCode();
         System.out.println("Resonse code get " + code);
 
-        if (code == HttpURLConnection.HTTP_OK) {
+        if (code >= HttpURLConnection.HTTP_OK && code < HttpURLConnection.HTTP_MULT_CHOICE || code == 500) {
             BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
             String line;
             StringBuffer response = new StringBuffer();

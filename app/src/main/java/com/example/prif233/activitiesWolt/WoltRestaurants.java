@@ -68,11 +68,22 @@ public class WoltRestaurants extends AppCompatActivity {
             Handler handler = new Handler(Looper.getMainLooper());
 
             executor.execute(() -> {
+
+                System.out.println("executorius");
+                System.out.println("executorius");
+                System.out.println("executorius");
+                System.out.println("executorius");
+                System.out.println("executorius");
                 try {
                     String response = RestOperations.sendGet(GET_ALL_RESTAURANTS_URL);
                     System.out.println(response);
                     handler.post(() -> {
                         try {
+                            System.out.println("executorius");
+                            System.out.println("executorius");
+                            System.out.println("executorius");
+                            System.out.println("executorius");
+                            System.out.println("executorius");
                             if (!response.equals("Error")) {
                                 //Cia yra dalis, kaip is json, kuriame yra [{},{}, {},...] paversti i List is Restoranu
 
@@ -105,6 +116,7 @@ public class WoltRestaurants extends AppCompatActivity {
                     });
                 } catch (IOException e) {
                     throw new RuntimeException(e);
+
                 }
             });
         }

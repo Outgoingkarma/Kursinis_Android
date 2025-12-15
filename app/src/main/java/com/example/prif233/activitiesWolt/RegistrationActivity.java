@@ -151,7 +151,7 @@ public class RegistrationActivity extends AppCompatActivity {
             try {
                 String response = RestOperations.sendPost(finalUrl, finalUserInfo);
                 handler.post(() -> {
-                    if (!response.equals("Error") && !response.isEmpty()) {
+                    if (!response.equals("Error") ) {
                         Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                         startActivity(intent);
                     }

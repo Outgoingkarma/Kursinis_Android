@@ -8,6 +8,20 @@
     tools:context=".activitiesWolt.RegistrationActivity">
 
     <EditText
+        android:id="@+id/regPhoneField"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46" />
+
+    <EditText
         android:id="@+id/regLoginField"
         android:layout_width="250dp"
         android:layout_height="60dp"
@@ -19,7 +33,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.099" />
 
     <EditText
         android:id="@+id/regPasswordField"
@@ -32,7 +46,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_bias="0.189" />
 
     <EditText
         android:id="@+id/regNameField"
@@ -46,7 +60,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.254" />
+        app:layout_constraintVertical_bias="0.281" />
 
     <EditText
         android:id="@+id/regSurnameField"
@@ -60,35 +74,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.344" />
-
-    <EditText
-        android:id="@+id/regPhoneField"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.433" />
-
-    <EditText
-        android:id="@+id/regEmailField"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.521" />
+        app:layout_constraintVertical_bias="0.371" />
 
     <EditText
         android:id="@+id/regAddressField"
@@ -103,7 +89,21 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.611" />
+        app:layout_constraintVertical_bias="0.637" />
+
+    <EditText
+        android:id="@+id/regEmailField"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.548" />
 
     <EditText
         android:id="@+id/regLicensePlateField"
@@ -248,5 +248,18 @@
         app:layout_constraintTop_toTopOf="@+id/regAddressField"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:onClick="loadLogWindow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
