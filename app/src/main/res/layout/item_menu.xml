@@ -90,9 +90,14 @@
                 android:id="@+id/btnDecrease"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:text="-"
+                android:text="−"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/holo_purple"
+                android:gravity="center"
+                android:padding="0dp"
+                android:textAllCaps="false" />
 
             <TextView
                 android:id="@+id/itemQuantity"
@@ -112,7 +117,12 @@
                 android:layout_height="48dp"
                 android:text="+"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/holo_purple"
+                android:gravity="center"
+                android:padding="0dp"
+                android:textAllCaps="false" />
 
         </LinearLayout>
 
