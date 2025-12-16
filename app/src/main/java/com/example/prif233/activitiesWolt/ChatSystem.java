@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prif233.R;
 import com.example.prif233.Utils.LocalDateAdapter;
+import com.example.prif233.Utils.LocalDateTimeAdapter;
 import com.example.prif233.Utils.RestOperations;
 import com.example.prif233.model.ChatMessage;
 import com.google.gson.Gson;
@@ -31,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -72,14 +74,16 @@ public class ChatSystem extends AppCompatActivity {
                     try {
                         if (!response.equals("Error")) {
                             GsonBuilder gsonBuilder = new GsonBuilder();
-                            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
+                            gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
                             Gson gsonMessages = gsonBuilder.setPrettyPrinting().create();
                             Type messagesListType = new TypeToken<List<ChatMessage>>() {
                             }.getType();
                             List<ChatMessage> messagesListFromJson = gsonMessages.fromJson(response, messagesListType);
                             ListView messagesListElement = findViewById(R.id.messageList);
-                            ArrayAdapter<ChatMessage> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesListFromJson);
+                            ChatMessageAdapter adapter = new ChatMessageAdapter(this, messagesListFromJson);
                             messagesListElement.setAdapter(adapter);
+//                            ArrayAdapter<ChatMessage> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesListFromJson);
+//                            messagesListElement.setAdapter(adapter);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

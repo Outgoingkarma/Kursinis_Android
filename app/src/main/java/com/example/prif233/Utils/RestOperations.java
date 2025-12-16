@@ -91,7 +91,7 @@ public class RestOperations {
         int code = httpURLConnection.getResponseCode();
         System.out.println("Resonse code get " + code);
 
-        if (code >= HttpURLConnection.HTTP_OK && code < HttpURLConnection.HTTP_MULT_CHOICE || code == 500) {
+        if (code >= HttpURLConnection.HTTP_OK && code < HttpURLConnection.HTTP_MULT_CHOICE /*|| code == 500*/) {
             BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
             String line;
             StringBuffer response = new StringBuffer();

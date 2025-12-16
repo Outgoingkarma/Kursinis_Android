@@ -18,9 +18,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activitiesWolt.ChatMessageAdapter"
+            android:exported="false" />
+        <activity
             android:name=".activitiesWolt.ChatSystem"
             android:exported="false" />
-
         <activity
             android:name=".activitiesWolt.MenuActivity"
             android:exported="false" />
