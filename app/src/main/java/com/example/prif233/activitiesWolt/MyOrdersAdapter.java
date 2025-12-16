@@ -42,13 +42,15 @@ public class MyOrdersAdapter extends ArrayAdapter<FoodOrder> {
 //                    ? restaurantName
 //                    : order.getName());
 
-            orderTitle.setText("Order #" + order.getId());
+            orderPrice.setText(String.format("€%.2f", order.getPrice()));
 
-//            if (order.getPrice() != null) {
-//                orderPrice.setText("€" + String.format("%.2f", order.getPrice()));
-//            } else {
-                orderPrice.setText("Price: N/A");
- //           }
+            orderTitle.setText("Order #" + order.getId());
+//
+////            if (order.getPrice() != null) {
+////                orderPrice.setText("€" + String.format("%.2f", order.getPrice()));
+////            } else {
+//                orderPrice.setText("Price: N/A");
+// //           }
         }
 
         return view;

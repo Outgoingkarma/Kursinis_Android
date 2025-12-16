@@ -1,9 +1,12 @@
 package com.example.prif233.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class FoodOrder {
     private int id;
     private boolean isDelivered;
+    @SerializedName("orderPrice")
     private double price;
     private FoodOrderStatus orderStatus;
 
