@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -76,23 +77,40 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnQua
                 System.out.println(response);
                 handler.post(() -> {
                     try {
-                        if (!response.equals("Error")) {
+                        if (response != null && !response.startsWith("Error") && !response.isEmpty()) {
+
+                            String trimmedResponse = response.trim();
+                            if (!trimmedResponse.startsWith("[") || !trimmedResponse.endsWith("]")) {
+                                Toast.makeText(this, "Invalid menu response format", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
                             Gson gsonMenu = gsonBuilder.setPrettyPrinting().create();
                             Type menuListType = new TypeToken<List<Dishes>>() {
                             }.getType();
                             List<Dishes> menuListFromJson = gsonMenu.fromJson(response, menuListType);
-                            
-                            ListView menuListElement = findViewById(R.id.menuItems);
-                            menuAdapter = new MenuAdapter(this, menuListFromJson);
-                            menuListElement.setAdapter(menuAdapter);
-                            
-                            // Update order summary
-                            updateOrderSummary();
+
+                            if(menuListFromJson != null && !menuListFromJson.isEmpty()){
+                                ListView menuListElement = findViewById(R.id.menuItems);
+                                menuAdapter = new MenuAdapter(this, menuListFromJson);
+                                menuListElement.setAdapter(menuAdapter);
+                                updateOrderSummary();
+                            } else {
+                                Toast.makeText(this, "No menu items available", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            String errorMessage = (response == null || response.isEmpty()) ? "Failed to load menu" : response;
+                            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                        System.out.println("JSON parsing error response: " + response);
+                        Toast.makeText(this, "Error parsing menu dishes", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
+                        System.out.println("JSON parsing error response: " + response);
                         Toast.makeText(this, "Error loading menu", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -157,7 +175,7 @@ public class MenuActivity extends AppCompatActivity implements MenuAdapter.OnQua
             int quantity = quantities.getOrDefault(dishes.getId(), 0);
             if (quantity > 0) {
                 JsonObject itemJson = new JsonObject();
-                itemJson.addProperty("cuisineId", dishes.getId());
+                itemJson.addProperty("dishesId", dishes.getId());
                 itemJson.addProperty("quantity", quantity);
                 itemsArray.add(itemJson);
             }
