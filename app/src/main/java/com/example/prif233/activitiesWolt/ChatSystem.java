@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.prif233.R;
 import com.example.prif233.Utils.LocalDateAdapter;
 import com.example.prif233.Utils.RestOperations;
-import com.example.prif233.model.Review;
+import com.example.prif233.model.ChatMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -74,11 +74,11 @@ public class ChatSystem extends AppCompatActivity {
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateAdapter());
                             Gson gsonMessages = gsonBuilder.setPrettyPrinting().create();
-                            Type messagesListType = new TypeToken<List<Review>>() {
+                            Type messagesListType = new TypeToken<List<ChatMessage>>() {
                             }.getType();
-                            List<Review> messagesListFromJson = gsonMessages.fromJson(response, messagesListType);
+                            List<ChatMessage> messagesListFromJson = gsonMessages.fromJson(response, messagesListType);
                             ListView messagesListElement = findViewById(R.id.messageList);
-                            ArrayAdapter<Review> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesListFromJson);
+                            ArrayAdapter<ChatMessage> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesListFromJson);
                             messagesListElement.setAdapter(adapter);
                         }
                     } catch (Exception e) {
