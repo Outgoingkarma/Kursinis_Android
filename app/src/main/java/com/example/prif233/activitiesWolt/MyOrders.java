@@ -96,18 +96,20 @@ public class MyOrders extends AppCompatActivity {
 
                                 ordersListElement.setOnItemClickListener((parent, view, position, id) -> {
                                     FoodOrder selectedOrder = ordersListFromJson.get(position);
-                                    Intent orderDetailsIntent = new Intent(MyOrders.this, ChatSystem.class);
+                                    Intent orderDetailsIntent = new Intent(MyOrders.this, OrderDetailsActivity.class);
                                     orderDetailsIntent.putExtra("orderId", selectedOrder.getId());
                                     orderDetailsIntent.putExtra("userId", userId);
-                                    if(currentUser != null){
+                                    orderDetailsIntent.putExtra("orderPrice", selectedOrder.getPrice());
+                                    orderDetailsIntent.putExtra("orderStatus", selectedOrder.getOrderStatus() != null ? selectedOrder.getOrderStatus().name() : null);
+                                    orderDetailsIntent.putExtra("isDelivered", selectedOrder.isDelivered());
+                                    if (currentUser != null) {
                                         try {
                                             GsonBuilder userGsonBuilder = new GsonBuilder();
                                             Gson userGson = userGsonBuilder.create();
                                             String userJsonString = userGson.toJson(currentUser);
                                             orderDetailsIntent.putExtra("userJson", userJsonString);
-                                        }catch (Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
-
                                         }
                                     }
                                     startActivity(orderDetailsIntent);
