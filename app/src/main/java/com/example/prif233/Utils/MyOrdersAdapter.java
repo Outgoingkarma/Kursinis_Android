@@ -1,4 +1,4 @@
-package com.example.prif233.activitiesWolt;
+package com.example.prif233.Utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -28,29 +28,18 @@ public class MyOrdersAdapter extends ArrayAdapter<FoodOrder> {
         if (view == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.item_order, parent, false);
         }
-
         FoodOrder order = getItem(position);
-
         TextView restaurantLabel = view.findViewById(R.id.orderRestaurant);
         TextView orderTitle = view.findViewById(R.id.orderTitle);
         TextView orderPrice = view.findViewById(R.id.orderPrice);
+        TextView orderStatus = view.findViewById(R.id.orderStatus);
 
         if (order != null) {
-//            String restaurantName = order.getRestaurantName();
-//            // Fallback to order name if restaurant name is not present
-//            restaurantLabel.setText(restaurantName != null && !restaurantName.isEmpty()
-//                    ? restaurantName
-//                    : order.getName());
-
             orderPrice.setText(String.format("€%.2f", order.getPrice()));
-
             orderTitle.setText("Order #" + order.getId());
-//
-////            if (order.getPrice() != null) {
-////                orderPrice.setText("€" + String.format("%.2f", order.getPrice()));
-////            } else {
-//                orderPrice.setText("Price: N/A");
-// //           }
+
+            String status = (order.getOrderStatus() != null) ? order.getOrderStatus().name() : "Unknown";
+            orderStatus.setText("Status: " + status);
         }
 
         return view;

@@ -17,14 +17,25 @@ public class LocalDateTimeAdapter implements JsonDeserializer<LocalDateTime>, Js
     @Override
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
-        return LocalDateTime.parse(json.getAsString(),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withLocale(Locale.ENGLISH));
+        String s = json.getAsString();
+        try {
+            // Works for "2025-12-16T02:03:46" AND "2025-12-16T02:03:46.123"
+            return LocalDateTime.parse(s);
+        } catch (Exception e) {
+            // Fallback if you want to keep your custom format
+            try {
+                return LocalDateTime.parse(s,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withLocale(Locale.ENGLISH));
+            } catch (Exception e2) {
+                throw new JsonParseException("Cannot parse LocalDateTime: " + s, e2);
+            }
+        }
     }
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     @Override
     public JsonElement serialize(LocalDateTime localDateTime, Type srcType, JsonSerializationContext context) {
-        return new JsonPrimitive(formatter.format(localDateTime));
+        return new JsonPrimitive(localDateTime.toString());
     }
 }

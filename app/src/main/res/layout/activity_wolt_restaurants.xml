@@ -9,14 +9,42 @@
 
     <ListView
         android:id="@+id/restaurantList"
-        android:layout_width="408dp"
-        android:layout_height="491dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnNewOrders" />
+
+    <Button
+        android:id="@+id/btnNewOrders"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="New Orders"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnFinishInProgress" />
+
+    <ListView
+        android:id="@+id/driverInProgressList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnNewOrders" />
+
+    <Button
+        android:id="@+id/btnFinishInProgress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Finish selected order"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button3" />
 
     <Button
         android:id="@+id/button3"
@@ -24,26 +52,18 @@
         android:layout_height="wrap_content"
         android:onClick="viewPurchaseHistory"
         android:text="@string/history_en"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.877"
-        tools:ignore="OnClick" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/update_btn_en"
         android:onClick="viewMyAccount"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/update_btn_en"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.828"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.877"
-        tools:ignore="OnClick" />
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

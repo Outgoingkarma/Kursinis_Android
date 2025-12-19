@@ -39,6 +39,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private View addressField;
     private View licensePlateField;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +83,24 @@ public class RegistrationActivity extends AppCompatActivity {
             if (isChecked) {
                 // Show driver fields, hide address field
                 addressField.setVisibility(View.GONE);
+//                addressText.setVisibility(View.GONE);
                 licensePlateField.setVisibility(View.VISIBLE);
                 vehicleTypeSpinner.setVisibility(View.VISIBLE);
+
             } else {
                 // Show address field, hide driver fields
                 addressField.setVisibility(View.VISIBLE);
+ //               addressText.setVisibility(View.VISIBLE);
                 licensePlateField.setVisibility(View.GONE);
                 vehicleTypeSpinner.setVisibility(View.GONE);
             }
+            boolean checked = isDriverCheckbox.isChecked();
+            addressField.setVisibility(checked ? View.GONE : View.VISIBLE);
+//            addressText.setVisibility(checked ? View.GONE : View.VISIBLE);
+            licensePlateField.setVisibility(checked ? View.VISIBLE : View.GONE);
+            vehicleTypeSpinner.setVisibility(checked ? View.VISIBLE : View.GONE);
         });
+
     }
 
     public void createAccount(View view) {

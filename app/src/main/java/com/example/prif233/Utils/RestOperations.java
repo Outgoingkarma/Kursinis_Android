@@ -50,25 +50,47 @@ public class RestOperations {
 
     public static String sendDelete(String urlDelete) throws IOException {
         URL url = new URL(urlDelete);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestMethod("DELETE");
-        httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("DELETE");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setConnectTimeout(15000);
+        conn.setReadTimeout(15000);
 
-        int code = httpURLConnection.getResponseCode();
-        System.out.println("Resonse code get " + code);
+        int code = conn.getResponseCode();
+        System.out.println("Response code delete " + code);
 
-        if (code == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while ((line = in.readLine()) != null) {
-                response.append(line);
+        // Success: 200..299 (covers 200 OK and 204 NO_CONTENT)
+        if (code >= HttpURLConnection.HTTP_OK && code < HttpURLConnection.HTTP_MULT_CHOICE) {
+            // 204 has no body -> just return something consistent
+            if (code == HttpURLConnection.HTTP_NO_CONTENT) {
+                conn.disconnect();
+                return "success";
             }
-            in.close();
-            return response.toString();
-        } else {
-            return "Error";
+
+            StringBuilder response = new StringBuilder();
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String line;
+                while ((line = in.readLine()) != null) response.append(line);
+            } finally {
+                conn.disconnect();
+            }
+            return response.length() == 0 ? "success" : response.toString();
         }
+
+        // Failure: read error stream so you can see the real reason
+        StringBuilder errResp = new StringBuilder();
+        try {
+            if (conn.getErrorStream() != null) {
+                try (BufferedReader err = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
+                    String line;
+                    while ((line = err.readLine()) != null) errResp.append(line);
+                }
+            }
+        } finally {
+            conn.disconnect();
+        }
+
+        return errResp.length() == 0 ? ("Error: " + code) : errResp.toString();
     }
 
     public static String sendPost(String urlPost, String postDataParams) throws IOException {

@@ -1,7 +1,6 @@
 package com.example.prif233.activitiesWolt;
 
 import static com.example.prif233.Utils.Constants.GET_MESSAGES_BY_ORDER;
-import static com.example.prif233.Utils.Constants.GET_ORDERS_BY_USER;
 import static com.example.prif233.Utils.Constants.SEND_MESSAGE;
 
 import android.content.Intent;
@@ -9,9 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prif233.R;
-import com.example.prif233.Utils.LocalDateAdapter;
+import com.example.prif233.Utils.ChatMessageAdapter;
 import com.example.prif233.Utils.LocalDateTimeAdapter;
 import com.example.prif233.Utils.RestOperations;
 import com.example.prif233.model.ChatMessage;
@@ -31,16 +30,29 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ChatSystem extends AppCompatActivity {
 
     private int orderId;
     private int userId;
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
+
+    private final Handler refreshHandler = new Handler(Looper.getMainLooper());
+    private static final long REFRESH_MS = 5000L;
+
+    private final Runnable refreshRunnable = new Runnable() {
+        @Override public void run() {
+            loadMessages();
+            refreshHandler.postDelayed(this, REFRESH_MS);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +70,43 @@ public class ChatSystem extends AppCompatActivity {
         orderId = intent.getIntExtra("orderId", 0);
         userId = intent.getIntExtra("userId", 0);
 
-        loadMessages();
 
     }
 
-    private void loadMessages() {
-        Executor executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshHandler.removeCallbacks(refreshRunnable);
+        refreshHandler.post(refreshRunnable);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        refreshHandler.removeCallbacks(refreshRunnable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdownNow();
+    }
+
+
+
+
+
+
+    private void loadMessages() {
         executor.execute(() -> {
             try {
                 String response = RestOperations.sendGet(GET_MESSAGES_BY_ORDER + orderId);
                 System.out.println(response);
-                handler.post(() -> {
+                uiHandler.post(() -> {
                     try {
-                        if (!response.equals("Error")) {
+                        if (response == null || response.startsWith("Error") || response.isEmpty()) return;
                             GsonBuilder gsonBuilder = new GsonBuilder();
                             gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
                             Gson gsonMessages = gsonBuilder.setPrettyPrinting().create();
@@ -84,22 +118,19 @@ public class ChatSystem extends AppCompatActivity {
                             messagesListElement.setAdapter(adapter);
 //                            ArrayAdapter<ChatMessage> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, messagesListFromJson);
 //                            messagesListElement.setAdapter(adapter);
-                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                uiHandler.post(() -> Toast.makeText(this, "Network error", Toast.LENGTH_SHORT).show());
             }
         });
 
     }
 
     public void sendMessage(View view) {
-        Executor executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
-
         TextView messageBody = findViewById(R.id.bodyField);
 
         Gson gson = new Gson();
@@ -114,9 +145,10 @@ public class ChatSystem extends AppCompatActivity {
             try {
                 String response = RestOperations.sendPost(SEND_MESSAGE, message);
                 System.out.println(response);
-                handler.post(() -> {
+                uiHandler.post(() -> {
                     try {
-                        if (!response.equals("Error")) {
+                        if (response != null && !response.startsWith("Error") && !response.isEmpty()) {
+                            messageBody.setText("");
                             loadMessages();
                         }
                     } catch (Exception e) {
@@ -124,7 +156,7 @@ public class ChatSystem extends AppCompatActivity {
                     }
                 });
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                uiHandler.post(() -> Toast.makeText(this, "Network error", Toast.LENGTH_SHORT).show());
             }
         });
 

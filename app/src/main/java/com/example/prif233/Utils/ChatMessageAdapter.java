@@ -1,4 +1,4 @@
-package com.example.prif233.activitiesWolt;
+package com.example.prif233.Utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;

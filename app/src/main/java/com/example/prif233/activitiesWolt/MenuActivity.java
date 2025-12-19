@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prif233.R;
 import com.example.prif233.Utils.LocalDateTimeAdapter;
+import com.example.prif233.Utils.MenuAdapter;
 import com.example.prif233.Utils.RestOperations;
 import com.example.prif233.model.Dishes;
 import com.google.gson.Gson;
@@ -32,7 +33,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;

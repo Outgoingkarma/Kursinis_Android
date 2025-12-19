@@ -2,6 +2,8 @@ package com.example.prif233.model;
 
 
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -13,6 +15,7 @@ public class User implements Serializable {
     protected String password;
     protected String name;
     protected String surname;
+    @SerializedName("phone_number")
     protected String phone_number;
     protected String email;
     protected LocalDateTime dateCreated;

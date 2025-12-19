@@ -1,9 +1,10 @@
 package com.example.prif233.activitiesWolt;
 
+import static com.example.prif233.Utils.Constants.GET_ORDERS_BY_DRIVER;
 import static com.example.prif233.Utils.Constants.GET_ORDERS_BY_USER;
+import static com.example.prif233.Utils.Constants.GET_USER_BY_ID;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.prif233.R;
+import com.example.prif233.Utils.MyOrdersAdapter;
 import com.example.prif233.Utils.RestOperations;
 import com.example.prif233.model.FoodOrder;
 import com.example.prif233.model.User;
@@ -71,7 +73,15 @@ public class MyOrders extends AppCompatActivity {
 
         executor.execute(() -> {
             try {
-                String response = RestOperations.sendGet(GET_ORDERS_BY_USER + userId);
+                // 1) detect role from server (since currentUser is parsed as User.class)
+                String userResp = RestOperations.sendGet(GET_USER_BY_ID + userId);
+                boolean isDriver = userResp != null && !userResp.startsWith("Error") && userResp.contains("\"licensePlate\"");
+
+// 2) choose proper history endpoint
+                String url = isDriver ? (GET_ORDERS_BY_DRIVER + userId) : (GET_ORDERS_BY_USER + userId);
+
+// 3) load orders
+                String response = RestOperations.sendGet(url);
                 System.out.println(response);
                 handler.post(() -> {
                     try {
